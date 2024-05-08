@@ -17,6 +17,7 @@ namespace BadmyTournamentSystem
             InitializeComponent();
             //AutoLoad();
             publicViewer.Show();
+            ChangeVisability(null, null);
         }
 
         public void AutoSave()
@@ -25,6 +26,7 @@ namespace BadmyTournamentSystem
             SaveToCsv(dgv_player_sehrgut, "cache/player_sehrgut.csv");
             SaveToCsv(dgv_games, "cache/games.csv");
             SaveToCsv(dgv_ranking, "cache/ranking.csv");
+            CreateBackup();
         }
         public void AutoLoad()
         {
@@ -213,12 +215,12 @@ namespace BadmyTournamentSystem
             if (dgv_player_gut.Rows.Count > dgv_player_sehrgut.Rows.Count)
             {
 
-                for (int i = 0; dgv_player_sehrgut.Rows.Count % 4 > i; i++)
+                for (int i = 0; dgv_player_sehrgut.Rows.Count % 4 > i - 1; i++)
                 {
                     RotateDataGridView(dgv_player_gut);
                 }
 
-                for (int i = 0; dgv_player_sehrgut.Rows.Count % 4 > i - 1; i++)
+                for (int i = 0; dgv_player_sehrgut.Rows.Count % 4 > i ; i++)
                 {
                     RotateDataGridView(dgv_player_sehrgut);
                 }
@@ -227,12 +229,12 @@ namespace BadmyTournamentSystem
             if (dgv_player_gut.Rows.Count < dgv_player_sehrgut.Rows.Count)
             {
 
-                for (int i = 0; dgv_player_gut.Rows.Count % 4 > i - 1; i++)
+                for (int i = 0; dgv_player_gut.Rows.Count % 4 > i ; i++)
                 {
                     RotateDataGridView(dgv_player_gut);
                 }
 
-                for (int i = 0; dgv_player_gut.Rows.Count % 4 > i; i++)
+                for (int i = 0; dgv_player_gut.Rows.Count % 4 > i - 1; i++)
                 {
                     RotateDataGridView(dgv_player_sehrgut);
                 }
@@ -295,7 +297,7 @@ namespace BadmyTournamentSystem
                 String t2vg = dgv_player_sehrgut.Rows[teams_ids[1]].Cells[0].Value.ToString();
 
 
-                dgv_games.Rows.Add(current_round.Text, t1g, t1vg, t2g, t2vg);
+                dgv_games.Rows.Add(current_round.Text, t1g, t1vg, null, null, t2g, t2vg);
                 teams_ids.Remove(teams_ids[0]);
                 teams_ids.Remove(teams_ids[0]);
             }
@@ -357,11 +359,11 @@ namespace BadmyTournamentSystem
 
             foreach (DataGridViewRow dr in dgv_player_gut.Rows)
             {
-                dgv_ranking.Rows.Add(dr.Cells[0].Value, 0, 0);
+                dgv_ranking.Rows.Add(dr.Cells[0].Value, (double)0, 0, 0);
             }
             foreach (DataGridViewRow dr in dgv_player_sehrgut.Rows)
             {
-                dgv_ranking.Rows.Add(dr.Cells[0].Value, 0, 0);
+                dgv_ranking.Rows.Add(dr.Cells[0].Value, (double)0, 0, 0);
             }
 
 
@@ -369,20 +371,43 @@ namespace BadmyTournamentSystem
             {
                 for (int i = 0; dgv_games.Rows.Count > i; i++)
                 {
-                    if ((string)dgv_games.Rows[i].Cells["t_win"].Value == "1")
+                    if (dgv_games.Rows[i].Cells["t1_points"].Value != null && dgv_games.Rows[i].Cells["t2_points"].Value != null && dgv_games.Rows[i].Cells["t1_points"].Value != "" && dgv_games.Rows[i].Cells["t2_points"].Value != "")
                     {
-                        DataGridViewRow dgvr = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[1].Value.ToString());
-                        dgvr.Cells[1].Value = (int)dgvr.Cells[1].Value + 1;
-                        DataGridViewRow dgvr2 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[2].Value.ToString());
-                        dgvr2.Cells[1].Value = (int)dgvr2.Cells[1].Value + 1;
+                        var test = dgv_games.Rows[i].Cells["t1_points"].Value;
+
+                        if (double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) > double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()))
+                        {
+                            DataGridViewRow dgvr = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[1].Value.ToString());
+                            dgvr.Cells[1].Value = (double)Math.Round(double.Parse(dgvr.Cells[1].Value.ToString()) + double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()), 2);
+                            dgvr.Cells[2].Value = int.Parse(dgvr.Cells[2].Value.ToString()) + 1;
+
+                            DataGridViewRow dgvr2 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[2].Value.ToString());
+                            dgvr2.Cells[1].Value = (double)Math.Round(double.Parse(dgvr2.Cells[1].Value.ToString()) + double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()), 2);
+                            dgvr2.Cells[2].Value = int.Parse(dgvr2.Cells[2].Value.ToString()) + 1;
+
+                            DataGridViewRow dgvr3 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[5].Value.ToString());
+                            dgvr3.Cells[1].Value = (double)Math.Round(double.Parse(dgvr3.Cells[1].Value.ToString()) - double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()), 2);
+                            DataGridViewRow dgvr4 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[6].Value.ToString());
+                            dgvr4.Cells[1].Value = (double)Math.Round(double.Parse(dgvr4.Cells[1].Value.ToString()) - double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()), 2);
+
+
+                        }
+                        if (double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) < double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()))
+                        {
+                            DataGridViewRow dgvr = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[1].Value.ToString());
+                            dgvr.Cells[1].Value = Math.Round(double.Parse(dgvr.Cells[1].Value.ToString()) - double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()), 2);
+                            DataGridViewRow dgvr2 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[2].Value.ToString());
+                            dgvr2.Cells[1].Value = Math.Round(double.Parse(dgvr2.Cells[1].Value.ToString()) - double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()), 2);
+
+                            DataGridViewRow dgvr3 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[5].Value.ToString());
+                            dgvr3.Cells[1].Value = Math.Round(double.Parse(dgvr3.Cells[1].Value.ToString()) + double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()), 2);
+                            dgvr3.Cells[2].Value = int.Parse(dgvr3.Cells[2].Value.ToString()) + 1;
+                            DataGridViewRow dgvr4 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[6].Value.ToString());
+                            dgvr4.Cells[1].Value = Math.Round(double.Parse(dgvr4.Cells[1].Value.ToString()) + double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()), 2);
+                            dgvr4.Cells[2].Value = int.Parse(dgvr4.Cells[2].Value.ToString()) + 1;
+                        }
                     }
-                    if ((string)dgv_games.Rows[i].Cells["t_win"].Value == "2")
-                    {
-                        DataGridViewRow dgvr = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[3].Value.ToString());
-                        dgvr.Cells[1].Value = (int)dgvr.Cells[1].Value + 1;
-                        DataGridViewRow dgvr2 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[4].Value.ToString());
-                        dgvr2.Cells[1].Value = (int)dgvr2.Cells[1].Value + 1;
-                    }
+
                 }
             }
 
@@ -414,13 +439,13 @@ namespace BadmyTournamentSystem
                         {
                             users.Remove(dgv_games.Rows[i].Cells[2].Value.ToString());
                         }
-                        if (users.Contains(dgv_games.Rows[i].Cells[3].Value.ToString()))
+                        if (users.Contains(dgv_games.Rows[i].Cells[5].Value.ToString()))
                         {
-                            users.Remove(dgv_games.Rows[i].Cells[3].Value.ToString());
+                            users.Remove(dgv_games.Rows[i].Cells[5].Value.ToString());
                         }
-                        if (users.Contains(dgv_games.Rows[i].Cells[4].Value.ToString()))
+                        if (users.Contains(dgv_games.Rows[i].Cells[6].Value.ToString()))
                         {
-                            users.Remove(dgv_games.Rows[i].Cells[4].Value.ToString());
+                            users.Remove(dgv_games.Rows[i].Cells[6].Value.ToString());
                         }
 
                     }
@@ -438,11 +463,13 @@ namespace BadmyTournamentSystem
 
 
 
-                                int temp = int.Parse(dgv_ranking.Rows[i].Cells[1].Value.ToString());
+                                double temp = double.Parse(dgv_ranking.Rows[i].Cells[1].Value.ToString());
                                 int temp2 = int.Parse(dgv_ranking.Rows[i].Cells[2].Value.ToString());
+                                int temp3 = int.Parse(dgv_ranking.Rows[i].Cells[3].Value.ToString());
 
-                                dgv_ranking.Rows[i].Cells[1].Value = temp + 1;
+                                dgv_ranking.Rows[i].Cells[1].Value = Math.Round(temp + (double)1,2);
                                 dgv_ranking.Rows[i].Cells[2].Value = temp2 + 1;
+                                dgv_ranking.Rows[i].Cells[3].Value = temp3 + 1;
                             }
                         }
                     }
@@ -610,8 +637,15 @@ namespace BadmyTournamentSystem
 
         private void button6_Click_1(object sender, EventArgs e)
         {
-            File.Delete("cache/games.csv");
-            File.Delete("cache/ranking.csv");
+            if (File.Exists("cache/games.csv"))
+            {
+                File.Delete("cache/games.csv");
+            }
+
+            if (File.Exists("cache/ranking.csv"))
+            {
+                File.Delete("cache/ranking.csv");
+            }
             dgv_games.Rows.Clear();
             dgv_ranking.Rows.Clear();
             CalculateRanking(null, null);
@@ -643,6 +677,128 @@ namespace BadmyTournamentSystem
         private void dgv_player_sehrgut_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             this.dgv_player_sehrgut.ClearSelection();
+        }
+
+        private void BringPlayerGoodToVeryGood(object sender, EventArgs e)
+        {
+            if (dgv_player_gut.SelectedCells.Count == 1)
+            {
+                // Die Zeile der ausgewählten Zelle erhalten
+                int rowIndex = dgv_player_gut.SelectedCells[0].RowIndex;
+
+                // Die Zeile löschen
+                if (rowIndex >= 0 && rowIndex < dgv_player_gut.Rows.Count)
+                {
+                    dgv_player_sehrgut.Rows.Add(dgv_player_gut.Rows[rowIndex].Cells[0].Value);
+                    dgv_player_gut.Rows.RemoveAt(rowIndex);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Bitte wähle nur eine Zelle aus, um die Zeile zu übertragen.", "Aktion erforderlich", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void BringPlayerVeryGoodToGood(object sender, EventArgs e)
+        {
+            if (dgv_player_sehrgut.SelectedCells.Count == 1)
+            {
+                // Die Zeile der ausgewählten Zelle erhalten
+                int rowIndex = dgv_player_sehrgut.SelectedCells[0].RowIndex;
+
+                // Die Zeile löschen
+                if (rowIndex >= 0 && rowIndex < dgv_player_sehrgut.Rows.Count)
+                {
+                    dgv_player_gut.Rows.Add(dgv_player_sehrgut.Rows[rowIndex].Cells[0].Value);
+                    dgv_player_sehrgut.Rows.RemoveAt(rowIndex);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Bitte wähle nur eine Zelle aus, um die Zeile zu übertragen.", "Aktion erforderlich", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void RemoveGoodPlayer(object sender, EventArgs e)
+        {
+            if (dgv_player_gut.SelectedCells.Count == 1)
+            {
+                // Die Zeile der ausgewählten Zelle erhalten
+                int rowIndex = dgv_player_gut.SelectedCells[0].RowIndex;
+
+                // Die Zeile löschen
+                if (rowIndex >= 0 && rowIndex < dgv_player_gut.Rows.Count)
+                {
+                    dgv_player_gut.Rows.RemoveAt(rowIndex);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Bitte wähle nur eine Zelle aus, um die Zeile zu löschen.", "Aktion erforderlich", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void RemoveVeryGoodPlayer(object sender, EventArgs e)
+        {
+            if (dgv_player_sehrgut.SelectedCells.Count == 1)
+            {
+                // Die Zeile der ausgewählten Zelle erhalten
+                int rowIndex = dgv_player_sehrgut.SelectedCells[0].RowIndex;
+
+                // Die Zeile löschen
+                if (rowIndex >= 0 && rowIndex < dgv_player_sehrgut.Rows.Count)
+                {
+                    dgv_player_sehrgut.Rows.RemoveAt(rowIndex);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Bitte wähle nur eine Zelle aus, um die Zeile zu löschen.", "Aktion erforderlich", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void dgv_player_gut_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var hti = dgv_player_gut.HitTest(e.X, e.Y);
+                dgv_player_gut.ClearSelection();
+                dgv_player_gut.Rows[hti.RowIndex].Selected = true;
+            }
+        }
+
+        private void dgv_player_sehrgut_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var hti = dgv_player_sehrgut.HitTest(e.X, e.Y);
+                dgv_player_sehrgut.ClearSelection();
+                dgv_player_sehrgut.Rows[hti.RowIndex].Selected = true;
+            }
+        }
+
+        public void CreateBackup()
+        {
+            string name = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            if (Directory.Exists("backup/"))
+            {
+                Directory.CreateDirectory("backup/");
+            }
+
+            if (Directory.Exists("backup/"))
+            {
+                Directory.CreateDirectory("backup/backup_" + name + "/");
+            }
+
+            SaveToCsv(dgv_player_gut, "backup/backup_" + name + "/player_gut.csv");
+            SaveToCsv(dgv_player_sehrgut, "backup/backup_" + name + "/player_sehrgut.csv");
+            SaveToCsv(dgv_games, "backup/backup_" + name + "/games.csv");
+            SaveToCsv(dgv_ranking, "backup/backup_" + name + "/ranking.csv");
+        }
+
+        private void ChangeVisability(object sender, EventArgs e)
+        {
+            publicViewer.toggleRanking(showRanking.Checked);
         }
     }
 

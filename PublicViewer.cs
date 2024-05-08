@@ -36,7 +36,7 @@ namespace BadmyTournamentSystem
                 // Loop through each cell in the source row and copy the cell values to the target row
                 for (int i = 0; i < row.Cells.Count; i++)
                 {
-                    dgv_ranking.Rows[rowIndex].Cells[i +1].Value = row.Cells[i].Value;
+                    dgv_ranking.Rows[rowIndex].Cells[i + 1].Value = row.Cells[i].Value;
                 }
             }
             this.dgv_ranking.Sort(this.dgv_ranking.Columns[2], ListSortDirection.Descending);
@@ -105,22 +105,23 @@ namespace BadmyTournamentSystem
             {
                 try
                 {
-                    if (row.Cells[5].Value.ToString() == "1")
+                    if (int.Parse(row.Cells[3].Value.ToString()) > int.Parse(row.Cells[4].Value.ToString()))
                     {
                         row.Cells[1].Style.BackColor = Color.LightGreen;
                         row.Cells[2].Style.BackColor = Color.LightGreen;
-                        row.Cells[3].Style.BackColor = Color.LightPink;
-                        row.Cells[4].Style.BackColor = Color.LightPink;
+                        row.Cells[5].Style.BackColor = Color.LightPink;
+                        row.Cells[6].Style.BackColor = Color.LightPink;
                     }
-                    else if (row.Cells[5].Value.ToString() == "2")
+                    else if(int.Parse(row.Cells[3].Value.ToString()) < int.Parse(row.Cells[4].Value.ToString()))
                     {
-                        row.Cells[4].Style.BackColor = Color.LightGreen;
-                        row.Cells[3].Style.BackColor = Color.LightGreen;
+                        row.Cells[6].Style.BackColor = Color.LightGreen;
+                        row.Cells[5].Style.BackColor = Color.LightGreen;
                         row.Cells[2].Style.BackColor = Color.LightPink;
                         row.Cells[1].Style.BackColor = Color.LightPink;
                     }
                 }
-                catch (System.NullReferenceException ex) { };
+                catch (System.NullReferenceException ex) { }
+                catch (System.FormatException ex) { };
             }
         }
 
@@ -132,6 +133,26 @@ namespace BadmyTournamentSystem
         private void dgv_ranking_SelectionChanged(object sender, EventArgs e)
         {
             this.dgv_ranking.ClearSelection();
+        }
+
+        public void toggleRanking(bool toggle)
+        {
+            if (toggle)
+            {
+                rankingpanel.Enabled = true;
+                rankingpanel.Width = 650;
+                
+            }
+            else
+            {
+                rankingpanel.Enabled = false;
+                rankingpanel.Width = 0;
+            }
+        }
+
+        private void panel4_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 
