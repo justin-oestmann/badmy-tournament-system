@@ -375,37 +375,46 @@ namespace BadmyTournamentSystem
                     {
                         var test = dgv_games.Rows[i].Cells["t1_points"].Value;
 
+                        
                         if (double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) > double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()))
                         {
                             DataGridViewRow dgvr = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[1].Value.ToString());
-                            dgvr.Cells[1].Value = (double)Math.Round(double.Parse(dgvr.Cells[1].Value.ToString()) + double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()), 2);
+                            dgvr.Cells[1].Value = (double)Math.Round(double.Parse(dgvr.Cells[1].Value.ToString()) + (1.2 - double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString())), 2);
                             dgvr.Cells[2].Value = int.Parse(dgvr.Cells[2].Value.ToString()) + 1;
 
                             DataGridViewRow dgvr2 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[2].Value.ToString());
-                            dgvr2.Cells[1].Value = (double)Math.Round(double.Parse(dgvr2.Cells[1].Value.ToString()) + double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()), 2);
+                            dgvr2.Cells[1].Value = (double)Math.Round(double.Parse(dgvr2.Cells[1].Value.ToString()) + (1.2 - double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString())), 2);
                             dgvr2.Cells[2].Value = int.Parse(dgvr2.Cells[2].Value.ToString()) + 1;
 
                             DataGridViewRow dgvr3 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[5].Value.ToString());
-                            dgvr3.Cells[1].Value = (double)Math.Round(double.Parse(dgvr3.Cells[1].Value.ToString()) - double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()), 2);
+                            dgvr3.Cells[1].Value = (double)Math.Round(double.Parse(dgvr3.Cells[1].Value.ToString()) - (1.2 - double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString())), 2);
+
                             DataGridViewRow dgvr4 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[6].Value.ToString());
-                            dgvr4.Cells[1].Value = (double)Math.Round(double.Parse(dgvr4.Cells[1].Value.ToString()) - double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()), 2);
+                            dgvr4.Cells[1].Value = (double)Math.Round(double.Parse(dgvr4.Cells[1].Value.ToString()) - (1.2 - double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString())), 2);
 
 
                         }
-                        if (double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) < double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()))
+                        else if (double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) < double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()))
                         {
                             DataGridViewRow dgvr = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[1].Value.ToString());
-                            dgvr.Cells[1].Value = Math.Round(double.Parse(dgvr.Cells[1].Value.ToString()) - double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()), 2);
+                            dgvr.Cells[1].Value = Math.Round(double.Parse(dgvr.Cells[1].Value.ToString()) - (1.2 - double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString())), 2);
                             DataGridViewRow dgvr2 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[2].Value.ToString());
-                            dgvr2.Cells[1].Value = Math.Round(double.Parse(dgvr2.Cells[1].Value.ToString()) - double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()), 2);
+                            dgvr2.Cells[1].Value = Math.Round(double.Parse(dgvr2.Cells[1].Value.ToString()) - (1.2 - double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString())), 2);
 
                             DataGridViewRow dgvr3 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[5].Value.ToString());
-                            dgvr3.Cells[1].Value = Math.Round(double.Parse(dgvr3.Cells[1].Value.ToString()) + double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()), 2);
+                            dgvr3.Cells[1].Value = Math.Round(double.Parse(dgvr3.Cells[1].Value.ToString()) + (1.2 - double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString())), 2);
                             dgvr3.Cells[2].Value = int.Parse(dgvr3.Cells[2].Value.ToString()) + 1;
                             DataGridViewRow dgvr4 = FindRowByValue(dgv_ranking, "name", dgv_games.Rows[i].Cells[6].Value.ToString());
-                            dgvr4.Cells[1].Value = Math.Round(double.Parse(dgvr4.Cells[1].Value.ToString()) + double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()), 2);
+                            dgvr4.Cells[1].Value = Math.Round(double.Parse(dgvr4.Cells[1].Value.ToString()) + (1.2 - double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) / double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString())), 2);
                             dgvr4.Cells[2].Value = int.Parse(dgvr4.Cells[2].Value.ToString()) + 1;
                         }
+                        else if (double.Parse(dgv_games.Rows[i].Cells["t1_points"].Value.ToString()) == double.Parse(dgv_games.Rows[i].Cells["t2_points"].Value.ToString()))
+                        {
+                            MessageBox.Show("In Runde " + dgv_games.Rows[i].Cells["round"].Value.ToString() + " gibt es ein uneindeutiges Spiel!");
+                            dgv_ranking.Rows.Clear();
+                            return;
+                        }
+                        
                     }
 
                 }

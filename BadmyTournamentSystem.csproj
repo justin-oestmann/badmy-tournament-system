@@ -10,7 +10,7 @@
     <ApplicationIcon>Logo-alpha.ico</ApplicationIcon>
     <SignAssembly>False</SignAssembly>
     <Authors>Justin Oestmann</Authors>
-    <FileVersion>1.0.0.0</FileVersion>
+    <FileVersion>1.0.0.1</FileVersion>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 

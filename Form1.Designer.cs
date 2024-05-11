@@ -32,13 +32,6 @@
             dgv_player_gut = new DataGridView();
             team_gut = new DataGridViewTextBoxColumn();
             dgv_games = new DataGridView();
-            round = new DataGridViewTextBoxColumn();
-            t1_gut = new DataGridViewTextBoxColumn();
-            t1_sehrgut = new DataGridViewTextBoxColumn();
-            t1_points = new DataGridViewComboBoxColumn();
-            t2_points = new DataGridViewComboBoxColumn();
-            t2_gut = new DataGridViewTextBoxColumn();
-            t2_sehrgut = new DataGridViewTextBoxColumn();
             dgv_ranking = new DataGridView();
             name = new DataGridViewTextBoxColumn();
             elopoints = new DataGridViewTextBoxColumn();
@@ -73,6 +66,13 @@
             button10 = new Button();
             button11 = new Button();
             showRanking = new CheckBox();
+            round = new DataGridViewTextBoxColumn();
+            t1_gut = new DataGridViewTextBoxColumn();
+            t1_sehrgut = new DataGridViewTextBoxColumn();
+            t1_points = new DataGridViewComboBoxColumn();
+            t2_points = new DataGridViewComboBoxColumn();
+            t2_gut = new DataGridViewTextBoxColumn();
+            t2_sehrgut = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgv_player_gut).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_games).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_ranking).BeginInit();
@@ -120,54 +120,6 @@
             dgv_games.Size = new Size(943, 554);
             dgv_games.TabIndex = 1;
             dgv_games.CellValueChanged += dgv_games_CellValueChanged;
-            // 
-            // round
-            // 
-            round.HeaderText = "Runde";
-            round.Name = "round";
-            round.ReadOnly = true;
-            // 
-            // t1_gut
-            // 
-            t1_gut.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            t1_gut.HeaderText = "T1 Gut";
-            t1_gut.Name = "t1_gut";
-            t1_gut.ReadOnly = true;
-            // 
-            // t1_sehrgut
-            // 
-            t1_sehrgut.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            t1_sehrgut.HeaderText = "T1 Sehr Gut";
-            t1_sehrgut.Name = "t1_sehrgut";
-            t1_sehrgut.ReadOnly = true;
-            // 
-            // t1_points
-            // 
-            t1_points.HeaderText = "Team1 Points";
-            t1_points.Items.AddRange(new object[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" });
-            t1_points.Name = "t1_points";
-            // 
-            // t2_points
-            // 
-            t2_points.HeaderText = "Team2 Points";
-            t2_points.Items.AddRange(new object[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" });
-            t2_points.Name = "t2_points";
-            t2_points.Resizable = DataGridViewTriState.True;
-            t2_points.SortMode = DataGridViewColumnSortMode.Automatic;
-            // 
-            // t2_gut
-            // 
-            t2_gut.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            t2_gut.HeaderText = "T2 Gut";
-            t2_gut.Name = "t2_gut";
-            t2_gut.ReadOnly = true;
-            // 
-            // t2_sehrgut
-            // 
-            t2_sehrgut.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            t2_sehrgut.HeaderText = "T2 Sehr Gut";
-            t2_sehrgut.Name = "t2_sehrgut";
-            t2_sehrgut.ReadOnly = true;
             // 
             // dgv_ranking
             // 
@@ -556,6 +508,54 @@
             showRanking.UseVisualStyleBackColor = true;
             showRanking.CheckStateChanged += ChangeVisability;
             // 
+            // round
+            // 
+            round.HeaderText = "Runde";
+            round.Name = "round";
+            round.ReadOnly = true;
+            // 
+            // t1_gut
+            // 
+            t1_gut.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            t1_gut.HeaderText = "T1 Gut";
+            t1_gut.Name = "t1_gut";
+            t1_gut.ReadOnly = true;
+            // 
+            // t1_sehrgut
+            // 
+            t1_sehrgut.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            t1_sehrgut.HeaderText = "T1 Sehr Gut";
+            t1_sehrgut.Name = "t1_sehrgut";
+            t1_sehrgut.ReadOnly = true;
+            // 
+            // t1_points
+            // 
+            t1_points.HeaderText = "Team1 Points";
+            t1_points.Items.AddRange(new object[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" });
+            t1_points.Name = "t1_points";
+            // 
+            // t2_points
+            // 
+            t2_points.HeaderText = "Team2 Points";
+            t2_points.Items.AddRange(new object[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" });
+            t2_points.Name = "t2_points";
+            t2_points.Resizable = DataGridViewTriState.True;
+            t2_points.SortMode = DataGridViewColumnSortMode.Automatic;
+            // 
+            // t2_gut
+            // 
+            t2_gut.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            t2_gut.HeaderText = "T2 Gut";
+            t2_gut.Name = "t2_gut";
+            t2_gut.ReadOnly = true;
+            // 
+            // t2_sehrgut
+            // 
+            t2_sehrgut.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            t2_sehrgut.HeaderText = "T2 Sehr Gut";
+            t2_sehrgut.Name = "t2_sehrgut";
+            t2_sehrgut.ReadOnly = true;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -632,13 +632,6 @@
         private Label label4;
         private Label label5;
         private Button button6;
-        private DataGridViewTextBoxColumn round;
-        private DataGridViewTextBoxColumn t1_gut;
-        private DataGridViewTextBoxColumn t1_sehrgut;
-        private DataGridViewComboBoxColumn t1_points;
-        private DataGridViewComboBoxColumn t2_points;
-        private DataGridViewTextBoxColumn t2_gut;
-        private DataGridViewTextBoxColumn t2_sehrgut;
         private Button button8;
         private Button button9;
         private Button button10;
@@ -648,5 +641,12 @@
         private DataGridViewTextBoxColumn points;
         private DataGridViewTextBoxColumn points_aussetzer;
         private CheckBox showRanking;
+        private DataGridViewTextBoxColumn round;
+        private DataGridViewTextBoxColumn t1_gut;
+        private DataGridViewTextBoxColumn t1_sehrgut;
+        private DataGridViewComboBoxColumn t1_points;
+        private DataGridViewComboBoxColumn t2_points;
+        private DataGridViewTextBoxColumn t2_gut;
+        private DataGridViewTextBoxColumn t2_sehrgut;
     }
 }
